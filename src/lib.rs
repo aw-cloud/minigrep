@@ -21,6 +21,7 @@ impl Config {
             None => return Err("Didn't get a filename"),
         };
 
+        // if CASE_INSENSITIVE is set (to anything), use case-insensitive search
         let case_sensitive = env::var("CASE_INSENSITIVE").is_err();
 
         Ok(Config { query, filename, case_sensitive })
@@ -49,7 +50,6 @@ pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
 }
 
 pub fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
-    println!("Using case case_insensitive search!");
     let query = query.to_lowercase();
     contents.lines()
         .filter(|line| line.to_lowercase().contains(&query))
@@ -81,7 +81,7 @@ Duct tape.";
         let contents = "\
 Rust:
 safe, fast, productive.
-Picvk three.
+Pick three.
 Trust me.";
 
         assert_eq!(
